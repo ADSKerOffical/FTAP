@@ -8,6 +8,21 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+anti = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
+   if not checkcaller() and self == game.Players.LocalPlayer and table.find({"destroy", "kick", "remove"}, getnamecallmethod():lower()) then
+  warn("Budgify: an attempt to destroy a player has been eliminated")
+return nil
+  elseif not checkcaller() and self == game.Players ans table.find({"banasync", "destroy", "remove"}, getnamecallmethod():lower()) then
+   warn("Budgify: TEST1")
+  return nil
+    end
+   return anti(self, ...)
+end))
+
+getgenv().isnetworkowner = newcclosure(function(part)
+  return (part.ReceiveAge == 0 and gethiddenproperty(part, "NetworkIsSleeping") == false)
+end)
+
 local function sno(player, cf)
 local args = {
     [1] = player,
@@ -147,6 +162,25 @@ ungrab(humanoid.RootPart)
   end
 end
    end    
+})
+
+Tab:AddToggle({
+ Name = "Players Kill grab",
+ Default = false,
+ Callback = function(Value)
+   for _, button in next, game.Players.LocalPlayer.PlayerGui.ContextActionGui.ContextButtonFrame:GetChildren() do
+  if button:IsA("ImageButton") and button.Name == "ContextActionButton" then
+    button.MouseButton1Click:Connect(function()
+for _, player in next, game.Players:GetPlayers() do
+   if player ~= game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and isnetworkowner(player.Character.HumanoidRootPart) and Value == true then
+game.Players.LocalPlayer.SimulationRadius = math.huge
+player.Character.Humanoid.Health = 0
+  end
+end
+    end)
+  end
+   end
+ end    
 })
 
 Tab:AddButton({
