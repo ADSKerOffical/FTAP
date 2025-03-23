@@ -218,6 +218,25 @@ end
  end    
 })
 
+Tab:AddToggle({
+ Name = "Strong fling players",
+ Default = false,
+ Callback = function(Value)
+ghh = Value
+        while ghh and task.wait() do
+  for _, player in next, game.Players:GetPlayers() do
+    if player ~= game.Players.LocalPlayer and workspace:FindFirstChild(player.Name) and player.Character:FindFirstChild("HumanoidRootPart") then
+      if player.Character.Head:FindFirstChild("PartOwner") and player.Character.Head.PartOwner.Value == game.Players.LocalPlayer.Name then
+     pcall(function() firetouchinterest(player.Character.HumanoidRootPart.RagdollTouchedHitbox, Workspace.Map.BaseGround.Grass, 0) end)
+        repeat game:GetService("RunService").Heartbeat:Wait() until not player.Character.Head:FindFirstChild("PartOwner") or player.Character.Head.PartOwner.Value ~= game.Players.LocalPlayer.Name or player.Character.HumanoidRootPart.Scream.IsPlaying
+         player.Character.HumanoidRootPart.Velocity += game.Workspace.CurrentCamera.CFrame.LookVector * 700
+      end
+    end
+  end
+end
+   end    
+})
+
 Tab:AddButton({
  Name = "Bring all by using Blobman",
  Callback = function()
